@@ -1,0 +1,153 @@
+```json
+{
+  "issues": [
+    {
+      "title": "Epic 1 – Project Setup & Infrastructure",
+      "body": "## Goal\nEstablish the technical foundation for backend (FastAPI), frontend (React + Tailwind), database (ZeroDB with vectors), and integrations.\n\n## Success Criteria\n- Repo + CI working\n- FastAPI + React scaffolds run locally with Docker\n- ZeroDB connected with pgvector enabled\n- .env configured for ZeroInvoice, Stripe, Twilio/SendGrid, GA\n",
+      "labels": ["Epic","Sprint:0","Priority:P0"]
+    },
+    {
+      "title": "Epic 2 – Customer Management (CRM)",
+      "body": "## Goal\nCreate and manage customer & lead records with vector search for segmentation.\n\n## Success Criteria\n- CRUD APIs + UI for customers\n- Tags and vector embeddings in place\n- Semantic + filter search working",
+      "labels": ["Epic","Sprint:1","Priority:P0"]
+    },
+    {
+      "title": "Epic 3 – Invoicing via ZeroInvoice",
+      "body": "## Goal\nCreate, send, and track invoices through ZeroInvoice with Stripe payment links.\n\n## Success Criteria\n- POST /invoices creates invoices via ZeroInvoice API\n- Webhooks update local cache + payments\n- UI to create/send/view invoices",
+      "labels": ["Epic","Sprint:2","Priority:P0"]
+    },
+    {
+      "title": "Epic 4 – Email & SMS Marketing",
+      "body": "## Goal\nBuild and send targeted campaigns to customers and leads.\n\n## Success Criteria\n- Templates, Segments, Campaigns CRUD\n- Send via Twilio/SendGrid\n- Message events (delivered, open, click, bounce, unsub) tracked",
+      "labels": ["Epic","Sprint:3","Priority:P0"]
+    },
+    {
+      "title": "Epic 5 – Conversion Tracking & Analytics",
+      "body": "## Goal\nTrack and attribute campaign conversions (e.g., invoice payments) to revenue and surface KPIs.\n\n## Success Criteria\n- Attribution logic implemented (last-click default)\n- GA Measurement Protocol wired\n- KPI dashboard (campaign ROI, open/click, payment rate)",
+      "labels": ["Epic","Sprint:4","Priority:P0"]
+    },
+    {
+      "title": "Epic 6 – Security, Permissions & Compliance",
+      "body": "## Goal\nEnforce org-based access control, JWT auth, and marketing opt-outs.\n\n## Success Criteria\n- JWT required and working\n- All queries scoped by organization_id\n- Unsubscribe endpoints respected in send pipelines",
+      "labels": ["Epic","Sprint:5","Priority:P0"]
+    },
+    {
+      "title": "Epic 7 – Hackathon Demo Prep",
+      "body": "## Goal\nEnsure a smooth end-to-end demo with seed data and scripted flows.\n\n## Success Criteria\n- Seed scripts for customers, invoices, campaigns\n- E2E flow verified\n- UI polish completed",
+      "labels": ["Epic","Sprint:6","Priority:P1"]
+    },
+
+    {
+      "title": "Story 1.1 – Backend Scaffold (FastAPI)",
+      "body": "### As a\nDeveloper\n\n### I want\nA FastAPI skeleton with environment config, DB connection, and health route\n\n### So that\nWe have a working base for building features\n\n### Acceptance Criteria\n- `/health` returns `{ \"status\": \"ok\" }`\n- SQLAlchemy connected to ZeroDB\n- Migrations setup and pgvector enabled\n\n### Tasks\n- [ ] FastAPI app init with routers\n- [ ] DB session and base models\n- [ ] Alembic migration enabling `vector` extension\n- [ ] `.env.example` with all keys",
+      "labels": ["Story","Epic:1","Sprint:0","Priority:P0"]
+    },
+    {
+      "title": "Story 1.2 – Frontend Scaffold (React + Tailwind)",
+      "body": "### As a\nDeveloper\n\n### I want\nA React app with Tailwind configured\n\n### So that\nWe can rapidly build a responsive UI\n\n### Acceptance Criteria\n- Tailwind builds in dev and prod\n- Base layout with header/nav\n\n### Tasks\n- [ ] Vite/Next.js init\n- [ ] Tailwind + PostCSS config\n- [ ] Base layout + routing",
+      "labels": ["Story","Epic:1","Sprint:0","Priority:P0"]
+    },
+    {
+      "title": "Story 1.3 – CI/CD & Dockerization",
+      "body": "### As a\nDeveloper\n\n### I want\nDocker compose and CI workflows\n\n### So that\nLocal dev and deployments are consistent\n\n### Acceptance Criteria\n- `docker-compose up` starts API, frontend, DB\n- GitHub Actions runs tests on push to main\n\n### Tasks\n- [ ] Dockerfiles for API + frontend\n- [ ] Compose with env files\n- [ ] GitHub Actions: lint, tests",
+      "labels": ["Story","Epic:1","Sprint:0","Priority:P1"]
+    },
+
+    {
+      "title": "Story 2.1 – Add Customer / Lead",
+      "body": "### As a\nStaff user\n\n### I want\nTo add a customer or lead with contact details and tags\n\n### So that\nWe can manage service relationships\n\n### Acceptance Criteria\n- Required: name, type(customer/lead)\n- Optional: email, phone, address, tags\n- Embedding generated on create\n\n### Tasks\n- [ ] POST `/customers`\n- [ ] Embedding generation hook\n- [ ] UI form + validation",
+      "labels": ["Story","Epic:2","Sprint:1","Priority:P0"]
+    },
+    {
+      "title": "Story 2.2 – Edit & Archive Customer",
+      "body": "### As a\nStaff user\n\n### I want\nTo update or archive customers\n\n### So that\nRecords stay accurate\n\n### Acceptance Criteria\n- PUT updates fields and re-embeds if text changes\n- Archive flag hides from active lists\n\n### Tasks\n- [ ] PUT `/customers/{id}`\n- [ ] Archive/restore endpoint\n- [ ] UI edit + archive actions",
+      "labels": ["Story","Epic:2","Sprint:1","Priority:P1"]
+    },
+    {
+      "title": "Story 2.3 – Vector + Filter Search",
+      "body": "### As a\nStaff user\n\n### I want\nSemantic + filter search (zip, type, tags)\n\n### So that\nI can quickly segment audiences\n\n### Acceptance Criteria\n- Cosine similarity search with threshold\n- Combine with filters\n\n### Tasks\n- [ ] GET `/customers/search?q=`\n- [ ] HNSW index configured\n- [ ] UI search bar + filters",
+      "labels": ["Story","Epic:2","Sprint:1","Priority:P0"]
+    },
+
+    {
+      "title": "Story 3.1 – Create Invoice via ZeroInvoice",
+      "body": "### As a\nStaff user\n\n### I want\nTo create an invoice for a customer through ZeroInvoice\n\n### So that\nThey can be billed for services\n\n### Acceptance Criteria\n- POST `/invoices` calls ZeroInvoice API\n- Cache row created in `zeroinvoice_invoices_cache`\n- Stripe payment link returned\n\n### Tasks\n- [ ] ZeroInvoice service client\n- [ ] POST `/invoices`\n- [ ] Cache mapping + tests\n- [ ] UI invoice form",
+      "labels": ["Story","Epic:3","Sprint:2","Priority:P0"]
+    },
+    {
+      "title": "Story 3.2 – Send Invoice via Email/SMS",
+      "body": "### As a\nStaff user\n\n### I want\nTo send invoice by email and/or SMS\n\n### So that\nCustomers can pay quickly\n\n### Acceptance Criteria\n- Delivery method selectable\n- Delivery status stored in cache `sent_via`\n\n### Tasks\n- [ ] Delivery via ZeroInvoice (preferred) or Twilio/SendGrid\n- [ ] Update cache fields\n- [ ] UI send actions",
+      "labels": ["Story","Epic:3","Sprint:2","Priority:P1"]
+    },
+    {
+      "title": "Story 3.3 – ZeroInvoice Webhook Sync",
+      "body": "### As a\nSystem\n\n### I want\nTo update invoice/payment status from webhooks\n\n### So that\nThe app reflects real-time payments\n\n### Acceptance Criteria\n- Webhook verifies signature\n- Paid/failed statuses update within seconds\n- Payments saved to `payments`\n\n### Tasks\n- [ ] `/webhooks/zeroinvoice`\n- [ ] Signature verification\n- [ ] Cache + payments updates\n- [ ] Replay-safe handler",
+      "labels": ["Story","Epic:3","Sprint:2","Priority:P0"]
+    },
+
+    {
+      "title": "Story 4.1 – Template Builder (Email/SMS)",
+      "body": "### As a\nStaff user\n\n### I want\nTo create reusable message templates with placeholders\n\n### So that\nI can run campaigns faster\n\n### Acceptance Criteria\n- Templates have channel, subject (email), content\n- Supports placeholders like `{{customer.name}}`\n\n### Tasks\n- [ ] CRUD `/templates`\n- [ ] Simple handlebars-style rendering\n- [ ] UI editor (HTML for email, text for SMS)",
+      "labels": ["Story","Epic:4","Sprint:3","Priority:P0"]
+    },
+    {
+      "title": "Story 4.2 – Segment Builder (Rule/Vector/Hybrid)",
+      "body": "### As a\nStaff user\n\n### I want\nTo define segments using rules, vectors, or both\n\n### So that\nI can target the right audience\n\n### Acceptance Criteria\n- `segments` supports rule_sql and/or vector query\n- Preview audience before save\n\n### Tasks\n- [ ] CRUD `/segments`\n- [ ] Audience preview endpoint\n- [ ] UI segment builder",
+      "labels": ["Story","Epic:4","Sprint:3","Priority:P0"]
+    },
+    {
+      "title": "Story 4.3 – Create & Schedule Campaign",
+      "body": "### As a\nStaff user\n\n### I want\nTo create a campaign with template + segment and schedule it\n\n### So that\nMessages send automatically\n\n### Acceptance Criteria\n- Campaign status: draft → scheduled/running → completed\n- UTM fields defaulted\n\n### Tasks\n- [ ] CRUD `/campaigns`\n- [ ] Schedule runner + `campaign_runs`\n- [ ] UI create/schedule",
+      "labels": ["Story","Epic:4","Sprint:3","Priority:P0"]
+    },
+    {
+      "title": "Story 4.4 – Send Messages & Track Events",
+      "body": "### As a\nSystem\n\n### I want\nTo send via Twilio/SendGrid and track events\n\n### So that\nWe capture delivered/open/click/bounce/unsub\n\n### Acceptance Criteria\n- Messages recorded with provider_message_id\n- Webhooks populate `message_events`\n\n### Tasks\n- [ ] Send services (Twilio/SendGrid)\n- [ ] `/webhooks/messaging`\n- [ ] UI send status and basic stats",
+      "labels": ["Story","Epic:4","Sprint:3","Priority:P0"]
+    },
+
+    {
+      "title": "Story 5.1 – Attribute Conversions to Campaigns",
+      "body": "### As a\nSystem\n\n### I want\nTo link payments to the last marketing touch\n\n### So that\nI can measure ROI\n\n### Acceptance Criteria\n- Attribution created on payment webhook\n- Stores campaign_run_id/message_id and revenue\n\n### Tasks\n- [ ] Attribution service\n- [ ] Join on latest qualifying message\n- [ ] Tests for edge cases",
+      "labels": ["Story","Epic:5","Sprint:4","Priority:P0"]
+    },
+    {
+      "title": "Story 5.2 – Google Analytics Integration",
+      "body": "### As a\nSystem\n\n### I want\nTo send events/sessions to GA with UTM props\n\n### So that\nWe see funnel performance\n\n### Acceptance Criteria\n- GA Measurement Protocol calls successful\n- UTM carried from message → session\n\n### Tasks\n- [ ] GA client util\n- [ ] Server-side events for conversions\n- [ ] Map client_id and UTM",
+      "labels": ["Story","Epic:5","Sprint:4","Priority:P1"]
+    },
+    {
+      "title": "Story 5.3 – KPI Dashboard",
+      "body": "### As a\nStaff user\n\n### I want\nA dashboard for revenue, conversion, open/click, payment rates\n\n### So that\nI can make data-driven decisions\n\n### Acceptance Criteria\n- Date range filters\n- Campaign performance table + charts\n\n### Tasks\n- [ ] `/analytics/dashboard` endpoint\n- [ ] Aggregations/materialized views\n- [ ] UI charts + tables",
+      "labels": ["Story","Epic:5","Sprint:4","Priority:P0"]
+    },
+
+    {
+      "title": "Story 6.1 – JWT Authentication",
+      "body": "### As a\nSystem\n\n### I want\nJWT auth for all org endpoints\n\n### So that\nOnly authorized users access data\n\n### Acceptance Criteria\n- Token validation middleware\n- Graceful expiry and refresh flow\n\n### Tasks\n- [ ] Auth middleware\n- [ ] Protect all routes\n- [ ] Minimal login UI (stubbed if needed)",
+      "labels": ["Story","Epic:6","Sprint:5","Priority:P0"]
+    },
+    {
+      "title": "Story 6.2 – Organization Data Isolation",
+      "body": "### As a\nSystem\n\n### I want\nAll queries scoped by organization_id\n\n### So that\nNo cross-tenant leakage occurs\n\n### Acceptance Criteria\n- Org filter enforced in services/ORM\n- Tests prove isolation\n\n### Tasks\n- [ ] Org context injection\n- [ ] Query guards/policies\n- [ ] Multi-tenant tests",
+      "labels": ["Story","Epic:6","Sprint:5","Priority:P0"]
+    },
+    {
+      "title": "Story 6.3 – Unsubscribe / Subscription Management",
+      "body": "### As a\nCustomer\n\n### I want\nTo unsubscribe from marketing\n\n### So that\nI stop receiving messages\n\n### Acceptance Criteria\n- `/unsubscribe` endpoint updates `subscriptions`\n- Send pipelines exclude unsubscribed/bounced\n\n### Tasks\n- [ ] Subscriptions CRUD\n- [ ] Unsubscribe link handling\n- [ ] Update send filters",
+      "labels": ["Story","Epic:6","Sprint:5","Priority:P0"]
+    },
+
+    {
+      "title": "Story 7.1 – Seed Demo Data",
+      "body": "### As a\nDeveloper\n\n### I want\nSeed scripts for customers, invoices, campaigns\n\n### So that\nWe can demo without manual setup\n\n### Acceptance Criteria\n- ≥10 customers, 3 invoices, 2 campaigns seeded\n\n### Tasks\n- [ ] Seed SQL/CLI\n- [ ] Sample templates/segments\n- [ ] Sample campaign run",
+      "labels": ["Story","Epic:7","Sprint:6","Priority:P1"]
+    },
+    {
+      "title": "Story 7.2 – E2E Demo Flow",
+      "body": "### As a\nDeveloper\n\n### I want\nTo verify end-to-end flow\n\n### So that\nThe live demo is reliable\n\n### Acceptance Criteria\n- Create customer → send invoice → (simulate) pay → send campaign → see attributed revenue\n\n### Tasks\n- [ ] E2E script or doc\n- [ ] Dry run checklist\n- [ ] Fix polish issues",
+      "labels": ["Story","Epic:7","Sprint:6","Priority:P1"]
+    }
+  ]
+}
+```
